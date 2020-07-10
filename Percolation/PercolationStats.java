@@ -53,9 +53,9 @@ public class PercolationStats {
     }
     // test client (see below)
     public static void main(String[] args) {
-        args = new String[2];
-        args[0] = "10";
-        args[1] = "10";
+        // args = new String[2];
+        // args[0] = "10";
+        // args[1] = "10";
         var stats = new PercolationStats(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
         StdOut.printf("mean\t\t\t = %f\n", stats.mean());
         StdOut.printf("stddev\t\t\t = %f\n", stats.stddev());

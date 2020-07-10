@@ -1,5 +1,3 @@
-import java.io.*;
-
 public class WeightedQuickUnionUF {
     private int[] parent;
     private int[] sz;
