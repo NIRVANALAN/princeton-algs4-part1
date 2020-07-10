@@ -5,10 +5,14 @@ import edu.princeton.cs.algs4.StdOut;
 public class PercolationStats {
 
     // perform independent trials on an n-by-n grid
-    private double[] results;
-    private int trials;
+    private final double[] results;
+    private final int trials;
+
+    private static final double CONFIDENCE = 1.96;
 
     public PercolationStats(int n, int trials) {
+        validateHelper(n);
+        validateHelper(trials);
         this.trials = trials;
         this.results = new double[trials];
         for (int i = 0; i < trials; i++) {
@@ -36,14 +40,17 @@ public class PercolationStats {
 
     // low endpoint of 95% confidence interval
     public double confidenceLo() {
-        return mean() - (1.96 * stddev()) / Math.sqrt(trials);
+        return mean() - (CONFIDENCE * stddev() / Math.sqrt(trials));
     }
 
     // high endpoint of 95% confidence interval
     public double confidenceHi() {
-        return mean() + (1.96 * stddev()) / Math.sqrt(trials);
+        return mean() + (CONFIDENCE * stddev() / Math.sqrt(trials));
     }
-
+    private void validateHelper(int x) {
+        if (x <= 0)
+            throw new IllegalArgumentException();
+    }
     // test client (see below)
     public static void main(String[] args) {
         args = new String[2];

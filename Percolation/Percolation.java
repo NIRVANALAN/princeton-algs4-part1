@@ -7,32 +7,25 @@ public class Percolation {
 
     // creates n-by-n grid, with all sites initially blocked
     private boolean[] grid;
-    private int n;
-    private int[] x = { 1, -1, 0, 0 };
-    private int[] y = { 0, 0, 1, -1 };
-    private WeightedQuickUnionUF uf;
-
-    private boolean validate(int row, int col) {
-        if (row < 1 || row > n || col < 1 || col > n)
-            return false;
-        return true;
-    }
-
-    private int id(int row, int col) {
-        if (validate(row, col))
-            return (row - 1) * n + col;
-        else
+    private final int n;
+    private final byte[] x = { 1, -1, 0, 0 };
+    private final byte[] y = { 0, 0, 1, -1 };
+    private final WeightedQuickUnionUF uf;
+    /*
+    final 用来修饰一个引用
+    如果引用为基本数据类型，则该引用为常量，该值无法修改；
+    如果引用为引用数据类型，比如对象、数组，则该对象、数组本身可以修改，但指向该对象或数组的地址的引用不能修改。
+    如果引用时类的成员变量，则必须当场赋值，否则编译会报错。
+    */
+    public Percolation(int n) { // after static but before methods
+        if (n <= 0)
             throw new IllegalArgumentException();
-    }
-
-    public Percolation(int n) {
-        if (n < 0)
-            throw new IllegalArgumentException();
-        grid = new boolean[n * n + 1];
+        grid = new boolean[n * n + 2];
         this.n = n;
-        uf = new WeightedQuickUnionUF(n * n + 1);
+        uf = new WeightedQuickUnionUF(n * n + 2);
         for (int i = 1; i <= n; i++) {
-            uf.union(0, i);
+            uf.union(0, id(1,i));
+            uf.union(n*n+1, id(n, i)); // !no constant here...
         }
     }
 
@@ -40,19 +33,19 @@ public class Percolation {
     public void open(int row, int col) {
         int centerId = id(row, col);
         if (!grid[centerId]) {
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < x.length; i++) {
                 int newRow = row + x[i];
                 int newCol = col + y[i];
                 try {
                     int currentId = id(newRow, newCol);  
                     if (grid[currentId]) // !
                         uf.union(centerId, currentId);
-                } catch (Exception e) {
+                } catch (IllegalArgumentException e) {
                     continue;
                 }
             }
+            grid[centerId] = true;
         }
-        grid[centerId] = true;
     }
 
     // is the site (row, col) open?
@@ -62,7 +55,6 @@ public class Percolation {
 
     // is the site (row, col) full?
     public boolean isFull(int row, int col) {
-
         int id = id(row, col);
         if (grid[id] && uf.find(id) == uf.find(0))
             return true;
@@ -81,11 +73,23 @@ public class Percolation {
 
     // does the system percolate?
     public boolean percolates() {
-        for (int i = 1; i <= n; i++) {
-            if (isFull(n, i))
-                return true;
-        }
+        if (uf.find(0) == uf.find(n * n + 1)) // ! no for loop
+            return true;
         return false;
+    }
+
+    //! private helper method
+    private boolean validate(int row, int col) { 
+        if (row < 1 || row > n || col < 1 || col > n)
+            return false;
+        return true;
+    }
+
+    private int id(int row, int col) {
+        if (validate(row, col))
+            return (row - 1) * n + col;
+        else
+            throw new IllegalArgumentException();
     }
 
     // test client (optional)
