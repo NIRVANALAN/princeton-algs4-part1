@@ -1,15 +1,14 @@
-package stack_and_queue_week2;
+import edu.princeton.cs.algs4.StdOut;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-
-import edu.princeton.cs.algs4.StdOut;
 
 public class Deque<Item> implements Iterable<Item> {
     // generics: Discover type mismatch errors at compile-time instead of run-time
 
     private Item[] s;
     private int tail = 0, head = 0; // next insert position
+    private int n = 0;
 
     // construct an empty deque
     public Deque() {
@@ -18,16 +17,15 @@ public class Deque<Item> implements Iterable<Item> {
 
     // is the deque empty?
     public boolean isEmpty() {
-        return tail == 0;
+        return head == tail; // ?
     }
 
     // return the number of items on the deque
     public int size() {
-        int n = 0;
-        var i = this.iterator();
-        while (i.hasNext()) {
-            n++;
-        }
+        // int n = 0;
+        // for (Item item : this) { // ! must call i.next()
+        // n++;
+        // } //! non-constant
         return n;
     }
 
@@ -40,6 +38,7 @@ public class Deque<Item> implements Iterable<Item> {
         }
         head = (head - 1 + s.length) % s.length; // -1 first
         s[head] = item;
+        n++;
     }
 
     // add the item to the back
@@ -51,6 +50,7 @@ public class Deque<Item> implements Iterable<Item> {
         }
         s[tail] = item;
         tail = (tail + 1) % s.length;
+        n++;
     }
 
     // remove and return the item from the front
@@ -59,8 +59,9 @@ public class Deque<Item> implements Iterable<Item> {
             throw new NoSuchElementException();
         if (this.size() == s.length / 4)
             this.resize(s.length / 2);
-        var item = s[head];
+        Item item = s[head];
         head = (head + 1) % s.length; //
+        n--;
         return item;
     }
 
@@ -69,9 +70,10 @@ public class Deque<Item> implements Iterable<Item> {
         if (this.size() == 0)
             throw new NoSuchElementException();
         tail = (tail - 1 + s.length) % s.length; // -1 first
-        var item = s[tail];
+        Item item = s[tail];
         if (this.size() == s.length / 4)
             this.resize(s.length / 2);
+        n--;
         return item;
     }
 
@@ -96,7 +98,7 @@ public class Deque<Item> implements Iterable<Item> {
         public Item next() {
             if (!hasNext())
                 throw new NoSuchElementException();
-            var ret = s[i];// ?
+            Item ret = s[i];// ?
             i = (i + 1) % s.length;
             return ret;
         }
@@ -105,22 +107,26 @@ public class Deque<Item> implements Iterable<Item> {
 
     // resize
     private void resize(int capacity) {
-        var copy = (Item[]) new Object[capacity];
+        // 1. copy ole elements into resized array
+        Item[] copy = (Item[]) new Object[capacity];
         int j = 0;
         for (Item item : this) { // !
             copy[j] = item;
             j++;
         }
+        // 2. update head, tail
+        head = 0;
+        tail = j;
         s = copy;
     }
 
     // unit testing (required)
     public static void main(String[] args) {
-        var que = new Deque<Integer>();
+        Deque<Integer> que = new Deque<>();
         que.addLast(1);
-        que.addLast(2);
+        que.addFirst(2);
         que.addLast(3);
-        que.addFirst(-1);
+        que.addFirst(4);
         // StdOut.println(que.size());
         // que.removeFirst();
         // que.removeLast();
