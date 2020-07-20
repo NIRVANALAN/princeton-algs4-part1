@@ -1,22 +1,25 @@
-// package stack_and_queue_week2;
+import java.util.Random;
 
 import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.StdRandom;
 
 public class Permutation {
     public static void main(String[] args) {
-        var queue = new RandomizedQueue<String>();
-        int k = StdIn.readInt();
-        while (!StdIn.isEmpty()) {
-            var string = StdIn.readString();
+        RandomizedQueue<String> queue = new RandomizedQueue<>();
+        int k = Integer.parseInt(args[0]);
+        while (k != 0 && !StdIn.isEmpty()) {
+            String string = StdIn.readString();
             if (queue.size() == k) {
+                if (StdRandom.bernoulli())
+                    continue;
                 queue.dequeue();
             }
             queue.enqueue(string);
         }
 
-        while (!queue.isEmpty()) {
-            StdOut.println(queue.dequeue());
+        for (String item : queue) {
+            StdOut.println(item);
         }
     }
 }

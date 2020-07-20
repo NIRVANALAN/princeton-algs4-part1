@@ -1,16 +1,15 @@
-// package stack_and_queue_week2;
+import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.StdRandom;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-
-import edu.princeton.cs.algs4.StdOut;
-import edu.princeton.cs.algs4.StdRandom;
 
 public class RandomizedQueue<Item> implements Iterable<Item> {
     // construct an empty randomized queue
 
     // node
     private Node first, last;
+    private int n = 0; // ! necessary?
 
     private class Node { // first private
         Item item;
@@ -18,7 +17,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     }
 
     public RandomizedQueue() {
-        last = first = null;
+        first = null; // Inner assignments should be avoided
     }
 
     // is the randomized queue empty?
@@ -28,11 +27,6 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     // return the number of items on the randomized queue
     public int size() {
-        int n = 0;
-        for (Item item : this) {
-            n++;
-            // StdOut.println(item);
-        }
         return n;
     }
 
@@ -40,7 +34,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     public void enqueue(Item item) {
         if (item == null)
             throw new IllegalArgumentException();
-        var oldLast = last;
+        Node oldLast = last;
         last = new Node();
         last.item = item;
         last.next = null;
@@ -48,6 +42,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
             first = last; // !
         else
             oldLast.next = last;
+        n++;
     }
 
     // remove and return a random item
@@ -55,7 +50,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         if (isEmpty())
             throw new NoSuchElementException();
         int k = StdRandom.uniform(this.size());
-        var node = first;
+        Node node = first;
         Item item;
         if (k == 0) {
             item = first.item;
@@ -73,6 +68,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         // first = first.next;
         if (isEmpty())
             last = null;
+        n--;
         return item;
     }
 
@@ -81,7 +77,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         if (isEmpty())
             throw new NoSuchElementException();
         int k = StdRandom.uniform(this.size());
-        var node = first;
+        Node node = first;
         for (int i = 0; i < k; i++) {
             node = node.next;
         }
@@ -90,24 +86,34 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     // return an independent iterator over items in random order
     public Iterator<Item> iterator() {
-        return new LinkedListIterator();
+        return new linkedListRandomIterator(this.size());
     }
 
-    private class LinkedListIterator implements Iterator<Item> {
+    private class linkedListRandomIterator implements Iterator<Item> {
 
         private Node current = first;
+        private int id = 0;
+        int[] perm;
+
+        public linkedListRandomIterator(int n) {
+            perm = StdRandom.permutation(n);
+        }
 
         @Override
         public boolean hasNext() {
-            return current != null;
+            return id != perm.length;
         }
 
         @Override
         public Item next() {
             if (!hasNext())
                 throw new NoSuchElementException();
-            var item = current.item;
-            current = current.next;
+            for (int i = 0; i < perm[id]; i++) {
+                current = current.next;
+            }
+            Item item = current.item;
+            current = first;
+            id++;
             return item;
         }
 
@@ -119,12 +125,15 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     // unit testing (required)
     public static void main(String[] args) {
-        var que = new RandomizedQueue<Integer>();
+        RandomizedQueue<Integer> que = new RandomizedQueue<>();
         for (int i = 0; i < 5; i++) {
             que.enqueue(i);
         }
-        while (!que.isEmpty()) {
-            StdOut.print(que.dequeue());
+        // while (!que.isEmpty()) {
+        // StdOut.print(que.dequeue());
+        // }
+        for (Integer item : que) {
+            StdOut.println(item);
         }
     }
 }

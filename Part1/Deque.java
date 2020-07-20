@@ -1,4 +1,4 @@
-// package stack_and_queue_week2;
+package stack_and_queue_week2;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -24,7 +24,8 @@ public class Deque<Item> implements Iterable<Item> {
     // return the number of items on the deque
     public int size() {
         int n = 0;
-        for (Item item : this) {
+        var i = this.iterator();
+        while (i.hasNext()) {
             n++;
         }
         return n;
@@ -120,10 +121,10 @@ public class Deque<Item> implements Iterable<Item> {
         que.addLast(2);
         que.addLast(3);
         que.addFirst(-1);
-        StdOut.println(que.size());
-        que.removeFirst();
-        que.removeLast();
-        que.removeLast();
+        // StdOut.println(que.size());
+        // que.removeFirst();
+        // que.removeLast();
+        // que.removeLast();
 
         // StdOut.print(que.size());
         for (Integer integer : que) {
