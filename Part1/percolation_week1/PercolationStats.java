@@ -1,3 +1,5 @@
+package percolation_week1;
+
 import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.StdStats;
 import edu.princeton.cs.algs4.StdOut;
@@ -47,10 +49,12 @@ public class PercolationStats {
     public double confidenceHi() {
         return mean() + (CONFIDENCE * stddev() / Math.sqrt(trials));
     }
+
     private void validateHelper(int x) {
         if (x <= 0)
             throw new IllegalArgumentException();
     }
+
     // test client (see below)
     public static void main(String[] args) {
         // args = new String[2];

@@ -1,3 +1,8 @@
+package percolation_week1;
+
+import edu.princeton.cs.algs4.StdIn;
+import edu.princeton.cs.algs4.StdOut;
+
 public class WeightedQuickUnionUF {
     private int[] parent;
     private int[] sz;
