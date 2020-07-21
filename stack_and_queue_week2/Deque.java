@@ -42,7 +42,8 @@ public class Deque<Item> implements Iterable<Item> {
     }
 
     // add the item to the back
-    public void addLast(Item item) {
+    public void addLast(Item item) { // ! resize() may cause non-constant memory change(over 128B). LinkedList
+                                     // implementation should solve this
         if (item == null)
             throw new IllegalArgumentException();
         if (this.size() == s.length - 1) {
@@ -60,17 +61,19 @@ public class Deque<Item> implements Iterable<Item> {
         if (this.size() == s.length / 4)
             this.resize(s.length / 2);
         Item item = s[head];
+        s[head] = null;
         head = (head + 1) % s.length; //
         n--;
         return item;
     }
 
     // remove and return the item from the back
-    public Item removeLast() {
+    public Item removeLast() { // loitering
         if (this.size() == 0)
             throw new NoSuchElementException();
         tail = (tail - 1 + s.length) % s.length; // -1 first
         Item item = s[tail];
+        s[tail] = null;
         if (this.size() == s.length / 4)
             this.resize(s.length / 2);
         n--;

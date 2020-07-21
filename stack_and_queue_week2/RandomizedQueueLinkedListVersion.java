@@ -4,7 +4,7 @@ import edu.princeton.cs.algs4.StdRandom;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class RandomizedQueue<Item> implements Iterable<Item> {
+public class RandomizedQueueLinkedListVersion<Item> implements Iterable<Item> {
     // construct an empty randomized queue
 
     // node
@@ -16,7 +16,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         Node next;
     }
 
-    public RandomizedQueue() {
+    public RandomizedQueueLinkedListVersion() {
         first = null; // Inner assignments should be avoided
     }
 
@@ -125,7 +125,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     // unit testing (required)
     public static void main(String[] args) {
-        RandomizedQueue<Integer> que = new RandomizedQueue<>();
+        RandomizedQueueLinkedListVersion<Integer> que = new RandomizedQueueLinkedListVersion<>();
         for (int i = 0; i < 5; i++) {
             que.enqueue(i);
         }
