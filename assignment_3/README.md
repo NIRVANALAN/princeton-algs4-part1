@@ -1,0 +1,6 @@
+- make sure you know the function of each line of code
+- comment, while not delete code //! counter=1;
+- comment is important
+- a || (c&&d)
+- clear StdOut before submission
+- We can use == operators for reference comparison (address comparison) and .equals() method for content comparison.
