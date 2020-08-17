@@ -1,5 +1,5 @@
 
-package assingment_3;
+package assignment_3;
 /******************************************************************************
  *  Compilation:  javac Point.java
  *  Execution:    java Point

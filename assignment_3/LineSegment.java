@@ -1,4 +1,4 @@
-package assingment_3;
+package assignment_3;
 
 /*************************************************************************
  * Compilation: javac Collinear_points_week3.LineSegment.java Execution: none Dependencies: Point.java
