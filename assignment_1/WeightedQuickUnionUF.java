@@ -1,4 +1,4 @@
-package percolation_week1;
+package assignment_1;
 
 import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
