@@ -1,4 +1,5 @@
 package assignment_4;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -95,27 +96,25 @@ public class Board {
 
     // all neighboring boards
     public Iterable<Board> neighbors() {
-        int i0 = 0, j0 = 0;
+        int i = 0, j=0;
         isFindBlank:
-        for (int i = 0; i < tiles.length; i++) {
-            for (int j = 0; j < tiles.length; j++) {
+        for (; i < tiles.length; i++) {
+            for (j = 0; j < tiles.length; j++) { // initialize j in double loop
                 if (tiles[i][j] == 0) {
-                    i0 = i;
-                    j0 = j;
                     break isFindBlank;
                 }
             }
         }
         ArrayList<Board> ans = new ArrayList<>();
-        int[] xCords = { 0, 1, 0, -1 }, yCords = { 1, 0, -1, 0 };
+        int[] xCords = {0, 1, 0, -1}, yCords = {1, 0, -1, 0};
         int x, y;
         for (int k = 0; k < xCords.length; k++) {
-            x = i0 + xCords[k];
-            y = j0 + yCords[k];
+            x = i + xCords[k];
+            y = j + yCords[k];
             if (x >= dimension() || x < 0 || y >= dimension()
                     || y < 0) continue;
             var neighborBoardTiles = new Board(tiles);
-            neighborBoardTiles.swap(i0, j0, x, y);
+            neighborBoardTiles.swap(i, j, x, y);
             ans.add(neighborBoardTiles);
         }
         return ans;
